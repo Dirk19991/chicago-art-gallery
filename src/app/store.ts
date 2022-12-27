@@ -11,8 +11,11 @@ import {
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import picturesSlice from '../features/pictures/picturesSlice';
 
-const rootReducer = combineReducers({});
+const rootReducer = combineReducers({
+  pictures: picturesSlice,
+});
 
 const persistConfig = {
   key: 'root',
