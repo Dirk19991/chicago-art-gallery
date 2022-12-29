@@ -7,4 +7,5 @@ export const StyledPictures = styled.div`
   flex-wrap: wrap;
   gap: 50px;
   margin-bottom: 100px;
+  padding-top: 70px;
 `;

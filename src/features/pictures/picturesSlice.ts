@@ -12,6 +12,15 @@ export const getHundredPaintings = createAsyncThunk(
   }
 );
 
+export const loadMore = createAsyncThunk(
+  'pictures/loadMore',
+  async (page: number) => {
+    const address = hundredPaintings(page);
+    const response = await axios.get(address);
+    return response.data;
+  }
+);
+
 interface Picture {
   link: string;
   title: string;
@@ -21,11 +30,13 @@ interface Picture {
 interface PicturesSliceState {
   status: 'idle' | 'loading' | 'fulfilled' | 'rejected';
   pictureLinks: Picture[];
+  currentPage: number | null;
 }
 
 const initialState: PicturesSliceState = {
   status: 'idle',
   pictureLinks: [],
+  currentPage: null,
 };
 
 const picturesSlice = createSlice({
@@ -38,6 +49,7 @@ const picturesSlice = createSlice({
     });
     builder.addCase(getHundredPaintings.fulfilled, (state, action) => {
       state.status = 'fulfilled';
+      state.currentPage = action.payload.pagination.current_page;
       const links = [];
       for (const elem of action.payload.data) {
         if (elem.image_id) {
@@ -48,6 +60,21 @@ const picturesSlice = createSlice({
         }
       }
       state.pictureLinks = links;
+    });
+    builder.addCase(loadMore.pending, (state) => {
+      state.status = 'loading';
+    });
+    builder.addCase(loadMore.fulfilled, (state, action) => {
+      state.status = 'fulfilled';
+      state.currentPage ? (state.currentPage += 1) : state.currentPage;
+      for (const elem of action.payload.data) {
+        if (elem.image_id) {
+          const link = imageAddress(elem.image_id);
+          const artist = elem.artist_title;
+          const title = elem.title;
+          state.pictureLinks.push({ link: link, artist: artist, title: title });
+        }
+      }
     });
   },
 });

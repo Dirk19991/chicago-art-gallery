@@ -7,9 +7,7 @@ export const StyledPictureElement = styled.img`
     transform: scale(1.5);
     z-index: 2;
   }
-  &:hover {
-    transform: scale(1.5);
-  }
+
   transition: transform ease-in 0.5s;
   cursor: pointer;
 `;

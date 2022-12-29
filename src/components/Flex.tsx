@@ -23,4 +23,5 @@ export const Flex = styled.div<FlexProps>`
   gap: ${(props) => (props.gap ? props.gap : '')};
   width: ${(props) => (props.width ? props.width : '')};
   font-weight: ${(props) => (props.fw ? props.fw : '')};
+  text-align: center;
 `;
